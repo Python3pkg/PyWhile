@@ -37,9 +37,9 @@ class CombinedCollector(Collector):
     def __init__(self, *others):
         self.others = others
     def statement(self, context, s):
-        return map(lambda x: x.statement(context, s), self.others)
+        return [x.statement(context, s) for x in self.others]
     def expression(self, context, e):
-        return map(lambda x: x.expression(context, e), self.others)
+        return [x.expression(context, e) for x in self.others]
     def __add__(self, o):
         return CombinedCollector(self.others + [o])
     __radd__ = __add__
@@ -65,7 +65,7 @@ class SpaceCollector(Collector):
     def end(self, context):
         self.update_max(context)
     def update_max(self, context):
-        s = sum(v.size() for v in context.context.values())
+        s = sum(v.size() for v in list(context.context.values()))
         self.space_max = max(self.space_max, s)
     def expression(self, context, e):
         pass 

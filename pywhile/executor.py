@@ -112,7 +112,7 @@ class Context(object):
             right = self.executeExpression(exp.right)
             return cons(left, right)
         elif isinstance(exp, FuncCall):
-            return Context(self.programs.values(), parent = self).executeProgram(exp.func, self.executeExpression(exp.argument))
+            return Context(list(self.programs.values()), parent = self).executeProgram(exp.func, self.executeExpression(exp.argument))
         elif isinstance(exp, UniversalCall):
             eval = self.executeExpression(exp.func_coded)
             eval_arg = self.executeExpression(exp.argument)
@@ -129,7 +129,7 @@ class Context(object):
 
     def executeUniversal(self, data, arg):
         parsed = self.parseSource(data)
-        return Context(self.programs.values()).executeAst(parsed, arg)
+        return Context(list(self.programs.values())).executeAst(parsed, arg)
 
     def asList(self, data):
         x = []
@@ -148,7 +148,7 @@ class Context(object):
         return Program(name, input, output, block)
 
     def parseBlock(self, l):
-        return map(self.parseStatement, self.asList(l))
+        return list(map(self.parseStatement, self.asList(l)))
 
     def parseStatement(self, s):
         n = s[0].name
@@ -299,7 +299,7 @@ class Context(object):
         try:
             return self.executeAst(self.programs[name], input)
         except AssertionError as e:
-            print self.collector.report()
+            print(self.collector.report())
             raise e
 
     def executeAst(self, ast, input):

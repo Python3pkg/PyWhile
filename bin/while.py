@@ -3,6 +3,7 @@ import pywhile
 from pywhile import cons, nil
 import argparse
 import logging
+from functools import reduce
 
 logger = logging.getLogger('Main')
 
@@ -51,7 +52,7 @@ if __name__ == '__main__':
     input = context.executeExpression(pywhile.parseExpression(args.input)[0])
     last_name = progs[-1].name
     ret = context.executeProgram(last_name, input)
-    print args.output(ret)
+    print(args.output(ret))
     if args.collector:
-        print
-        print context.collector.report()
+        print()
+        print(context.collector.report())

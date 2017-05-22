@@ -11,7 +11,7 @@ class DataExp(object): pass
 
 class SymExp(DataExp):
     def __init__(self, name):
-        assert isinstance(name, basestring), "%s is no string" % name
+        assert isinstance(name, str), "%s is no string" % name
         DataExp.__init__(self)
         self.name = name
     def __repr__(self):
@@ -19,7 +19,7 @@ class SymExp(DataExp):
 
 class Var(DataExp):
     def __init__(self, name):
-        assert isinstance(name, basestring),  "%s is no string" % name
+        assert isinstance(name, str),  "%s is no string" % name
         DataExp.__init__(self)
         self.name = name
     def __repr__(self):
@@ -74,7 +74,7 @@ class EqExp(DataExp):
 
 class FuncCall(DataExp):
     def __init__(self, func, argument):
-        assert isinstance(func, basestring), "%s is no string" % func
+        assert isinstance(func, str), "%s is no string" % func
         assert isinstance(argument, DataExp), "%s is no data" % argument
         DataExp.__init__(self)
         self.func = func
@@ -94,7 +94,7 @@ class UniversalCall(DataExp):
         return "[[{}]]({})".format(self.func_coded, self.argument)
 class SourceExp(DataExp):
     def __init__(self, func):
-        assert isinstance(func, basestring), "%s is no string" % func
+        assert isinstance(func, str), "%s is no string" % func
         DataExp.__init__(self)
         self.func = func
     def __repr__(self):

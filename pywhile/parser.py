@@ -1,23 +1,24 @@
 import pyparsing as PP
 from .ast import *
+from functools import reduce
 
 def between(l,ex,r):
-    if isinstance(l, basestring):
+    if isinstance(l, str):
         l = PP.Literal(l)
-    if isinstance(r, basestring):
+    if isinstance(r, str):
         r = PP.Literal(r)
     return PP.Suppress(l) + ex + PP.Suppress(r)
 
 
 keywords = nil, cons, hd, tl, atomwd, ifwd, elsewd, forwd, inwd, whilewd, readwd, writewd= \
-        map(PP.Keyword, ['nil', 'cons', 'hd', 'tl', 'atom?', 'if', 'else',
-            'for', 'in', 'while', 'read', 'write'])
+        list(map(PP.Keyword, ['nil', 'cons', 'hd', 'tl', 'atom?', 'if', 'else',
+            'for', 'in', 'while', 'read', 'write']))
 
 keywords = PP.MatchFirst(keywords)('keywords')
 
 identifier = (~keywords + PP.Regex('[a-zA-Z]\w*'))
 
-dot, eq = map(PP.Literal, ['.', '='])
+dot, eq = list(map(PP.Literal, ['.', '=']))
 
 symbol = (PP.Literal(':') + identifier)
 symbol.setParseAction(lambda x: SymExp(x[1]))
@@ -42,7 +43,7 @@ parended = between('(', expr, ')')
 parended.setParseAction(lambda x: x[0])
 
 numexp = PP.Word(PP.nums)('number')
-numexp.setParseAction(lambda x: toBinaryCons(long(x[0])))
+numexp.setParseAction(lambda x: toBinaryCons(int(x[0])))
 
 atom =  (nil | symbol | variable | numexp)
 
